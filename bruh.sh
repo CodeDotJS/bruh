@@ -18,8 +18,9 @@ if [ ! -d "$START_DIR" ]; then
   echo -e "\n\e[31m Oh noes! The specified directory does not exist!\e[0m\n"
   exit 1
 fi
+FULL_PATH=$(realpath "$START_DIR")
 
-REPOSITORY_ROOT=$(find_repository_root "$START_DIR")
+REPOSITORY_ROOT=$(find_repository_root "$FULL_PATH")
 
 if [ -z "$REPOSITORY_ROOT" ]; then
   echo -e "\n\e[31m Oopsie Woopsie! Not a GitHub repository!\e[0m\n"
