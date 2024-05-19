@@ -34,6 +34,10 @@ To specify a repository folder:
 $ bruh /path/to/repo_folder
 ```
 
+- __Screenshot__
+
+<p align="center"><img src="images/bruh.png" alt=""></p>
+
 <br>
 
 - __License__
