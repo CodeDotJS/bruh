@@ -12,38 +12,40 @@ find_repository_root() {
   echo ""
 }
 
-CURRENT_DIR=$(pwd)
+START_DIR="${1:-$(pwd)}"
 
-REPOSITORY_ROOT=$(find_repository_root "$CURRENT_DIR")
+REPOSITORY_ROOT=$(find_repository_root "$START_DIR")
 
 if [ -z "$REPOSITORY_ROOT" ]; then
-  echo "Oopsie Woopsie! Not a GitHub repository!"
+  echo -e "\n\e[31m Oopsie Woopsie! Not a GitHub repository!\e[0m\n"
   exit 1
 fi
 
 CONFIG_FILE="$REPOSITORY_ROOT/.git/config"
 
 if [ ! -f "$CONFIG_FILE" ]; then
-  echo "Git config file diddly doo not found!"
+  echo -e "\n\e[31m Git config file diddly doo not found!\e[0m\n"
   exit 1
 fi
 
 REPO_URL=$(grep -oP '(?<=url = ).*' "$CONFIG_FILE")
 
 if [ -z "$REPO_URL" ]; then
-  echo "Boo hoo, no repository URL found in config file!"
+  echo -e "\n\e[31m Boo hoo, no repository URL found in config file!\e[0m\n"
   exit 1
 fi
 
 HTTPS_URL=$(echo "$REPO_URL" | sed 's/git@github.com:/https:\/\/github.com\//' | sed 's/\.git$//')
+
+REPO_NAME=$(echo "$HTTPS_URL" | sed 's/https:\/\/github.com\///')
 
 if command -v xdg-open > /dev/null; then
   xdg-open "$HTTPS_URL"
 elif command -v open > /dev/null; then
   open "$HTTPS_URL"
 else
-  echo "Hooman, I cannot detect the web browser to use. Please help!"
+  echo -e "\n\e[31m Hooman, I cannot detect the web browser to use. Please help!\e[0m\n"
   exit 1
 fi
 
-echo "⮞ Opening repository - $HTTPS_URL"
+echo -e "\n\e[34m Opening on GitHub - $REPO_NAME\e[0m\n"
