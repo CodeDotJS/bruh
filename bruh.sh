@@ -14,6 +14,11 @@ find_repository_root() {
 
 START_DIR="${1:-$(pwd)}"
 
+if [ ! -d "$START_DIR" ]; then
+  echo -e "\n\e[31m Oh noes! The specified directory does not exist!\e[0m\n"
+  exit 1
+fi
+
 REPOSITORY_ROOT=$(find_repository_root "$START_DIR")
 
 if [ -z "$REPOSITORY_ROOT" ]; then
