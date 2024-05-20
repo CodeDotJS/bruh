@@ -1,10 +1,8 @@
 <p align="center"><img width="30%" src="images/E216.svg" alt=""></p>
 
----
-
 - __Description__
 
-Bash script to open the GitHub repository of a cloned repo in your browser. It works from any directory within the repository or by specifying the repository folder as an argument.
+ Bash script to open a GitHub repository in your browser from any directory within the repository or by specifying the repository folder as an argument. It also supports setting your username for quickly accessing your repositories.
 
 <br>
 
@@ -36,9 +34,20 @@ To specify a repository folder:
 $ bruh /path/to/repo_folder
 ```
 
+Set username
+
+```sh
+$ bruh --set-username torvalds
+```
+
+```sh
+$ bruh -o linux
+```
+<!--
 - __Screenshot__
 
 <p align="center"><img src="images/bruh.png" alt=""></p>
+ -->
 
 <br>
 
