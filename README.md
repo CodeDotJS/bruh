@@ -43,11 +43,10 @@ $ bruh --set-username torvalds
 ```sh
 $ bruh -o linux
 ```
-<!--
+
 - __Screenshot__
 
 <p align="center"><img src="images/bruh.png" alt=""></p>
- -->
 
 <br>
 
