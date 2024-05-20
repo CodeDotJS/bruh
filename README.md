@@ -1,5 +1,7 @@
 <p align="center"><img width="30%" src="images/E216.svg" alt=""></p>
 
+---
+
 - __Description__
 
 Bash script to open the GitHub repository of a cloned repo in your browser. It works from any directory within the repository or by specifying the repository folder as an argument.
