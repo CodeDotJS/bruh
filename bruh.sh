@@ -12,7 +12,71 @@ find_repository_root() {
   echo ""
 }
 
-START_DIR="${1:-$(pwd)}"
+set_username() {
+  local username="$1"
+  echo "$username" > ~/.bruh
+}
+
+get_username() {
+  if [ -f ~/.bruh ]; then
+    cat ~/.bruh
+  else
+    echo ""
+  fi
+}
+
+open_url() {
+  local url="$1"
+  local repo_name="$2"
+  if command -v xdg-open > /dev/null; then
+    xdg-open "$url"
+  elif command -v open > /dev/null; then
+    open "$url"
+  else
+    echo -e "\n\e[31m Hooman, I cannot detect the web browser to use. Please help!\e[0m\n"
+    exit 1
+  fi
+  echo -e "\n\e[34m Opening on GitHub - $repo_name\e[0m\n"
+}
+
+# Parse arguments
+while [[ "$#" -gt 0 ]]; do
+  case "$1" in
+    --set-username)
+      if [ -n "$2" ]; then
+        set_username "$2"
+        echo -e "\n\e[34m Username set to $2\e[0m\n"
+        exit 0
+      else
+        echo -e "\n\e[31m Error: --set-username requires a username argument\e[0m\n"
+        exit 1
+      fi
+      ;;
+    -o)
+      if [ -n "$2" ]; then
+        REPOSITORY="$2"
+        USERNAME=$(get_username)
+        if [ -z "$USERNAME" ]; then
+          echo -e "\n\e[31m Error: Username not set. Use --set-username <username> to set it.\e[0m\n"
+          exit 1
+        fi
+        GITHUB_URL="https://github.com/$USERNAME/$REPOSITORY"
+        REPO_NAME="$USERNAME/$REPOSITORY"
+        open_url "$GITHUB_URL" "$REPO_NAME"
+        exit 0
+      else
+        echo -e "\n\e[31m Error: -o requires a repository name argument\e[0m\n"
+        exit 1
+      fi
+      ;;
+    *)
+      START_DIR="$1"
+      ;;
+  esac
+  shift
+done
+
+START_DIR="${START_DIR:-$(pwd)}"
 
 if [ ! -d "$START_DIR" ]; then
   echo -e "\n\e[31m Oh noes! The specified directory does not exist!\e[0m\n"
@@ -45,13 +109,4 @@ HTTPS_URL=$(echo "$REPO_URL" | sed 's/git@github.com:/https:\/\/github.com\//' |
 
 REPO_NAME=$(echo "$HTTPS_URL" | sed 's/https:\/\/github.com\///')
 
-if command -v xdg-open > /dev/null; then
-  xdg-open "$HTTPS_URL"
-elif command -v open > /dev/null; then
-  open "$HTTPS_URL"
-else
-  echo -e "\n\e[31m Hooman, I cannot detect the web browser to use. Please help!\e[0m\n"
-  exit 1
-fi
-
-echo -e "\n\e[34m Opening on GitHub - $REPO_NAME\e[0m\n"
+open_url "$HTTPS_URL" "$REPO_NAME"
