@@ -46,7 +46,7 @@ $ bruh -o linux
 
 - __Screenshot__
 
-<p align="center"><img src="images/bruh.png" alt=""></p>
+<p align="center"><img src="images/bru.png" alt=""></p>
 
 <br>
 
