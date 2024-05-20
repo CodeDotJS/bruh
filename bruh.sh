@@ -53,21 +53,22 @@ while [[ "$#" -gt 0 ]]; do
       fi
       ;;
     -o)
-      if [ -n "$2" ]; then
-        REPOSITORY="$2"
-        USERNAME=$(get_username)
-        if [ -z "$USERNAME" ]; then
-          echo -e "\n\e[31m Error: Username not set. Use --set-username <username> to set it.\e[0m\n"
-          exit 1
-        fi
-        GITHUB_URL="https://github.com/$USERNAME/$REPOSITORY"
-        REPO_NAME="$USERNAME/$REPOSITORY"
-        open_url "$GITHUB_URL" "$REPO_NAME"
-        exit 0
-      else
-        echo -e "\n\e[31m Error: -o requires a repository name argument\e[0m\n"
+      USERNAME=$(get_username)
+      if [ -z "$USERNAME" ]; then
+        echo -e "\n\e[31m Error: Username not set. Use --set-username <username> to set it.\e[0m\n"
         exit 1
       fi
+      if [ -n "$2" ]; then
+        REPOSITORY="$2"
+        GITHUB_URL="https://github.com/$USERNAME/$REPOSITORY"
+        REPO_NAME="$USERNAME/$REPOSITORY"
+        shift
+      else
+        GITHUB_URL="https://github.com/$USERNAME"
+        REPO_NAME="$USERNAME"
+      fi
+      open_url "$GITHUB_URL" "$REPO_NAME"
+      exit 0
       ;;
     *)
       START_DIR="$1"
